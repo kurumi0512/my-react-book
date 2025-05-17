@@ -41,7 +41,7 @@ function App() {
 
   // 新增或更新
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 停止預設行為
+    e.preventDefault(); // 停止預設行為,因為網頁handlesubmit按鈕按下去就會刷新,e.preventDefault會停止預設行為
     try {
       const method = editing ? 'PUT' : 'POST';
       const url = editing ? `${API_URL}/${form.id}` : API_URL;
