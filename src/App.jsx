@@ -11,9 +11,14 @@ function App() {
 
   // 讀取書籍資料,同步讀取(東西多盡量用非同步讀取)
   const fetchBooks = async () => {
+    //非同步函式 fetchBooks，用來從 API 抓資料
     try {
       const res = await fetch(API_URL);
+      //使用 fetch 向 API（由 API_URL 指定）發送請求。
+      //這裡用 await 等待回應（res 是 Response 物件）。
       const result = await res.json();
+      //再用 await 把回應資料轉成 JSON 格式的物件。
+
       setBooks(result.data || []);
     } catch (error) {
       console.error('讀取書籍錯誤:', error);
@@ -43,13 +48,18 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault(); // 停止預設行為,因為網頁handlesubmit按鈕按下去就會刷新,e.preventDefault會停止預設行為
     try {
-      const method = editing ? 'PUT' : 'POST';
+      const method = editing ? 'PUT' : 'POST'; //根據 editing 狀態判斷是要「編輯」還是「新增」
       const url = editing ? `${API_URL}/${form.id}` : API_URL;
+      //如果是編輯，就把 URL 改成包含 id 的路徑，像是 /api/books/3；
+      //如果是新增，就用 API 的基本路徑 /api/books。
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
+      //method：傳送方式（POST 或 PUT）
+      //headers：告訴伺服器我們傳的是 JSON 格式
+      //body：把表單資料（form）轉成 JSON 傳 給伺服器
       const result = await res.json();
       if (res.ok) {
         await fetchBooks(); //重新查詢所有書籍
